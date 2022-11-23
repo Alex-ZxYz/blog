@@ -68,14 +68,18 @@
             <artifactId>easyexcel</artifactId>
         </dependency>
 
+        <!--swagger-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
         </dependency>
-
         <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
 
         <!--security-->
@@ -101,6 +105,7 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>7.12.0</version>
         </dependency>
+
 
     </dependencies>
 

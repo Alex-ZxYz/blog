@@ -12,9 +12,11 @@ import com.ZxYz.mapper.ArticleMapper;
 import com.ZxYz.service.ArticleService;
 import com.ZxYz.service.CategoryService;
 import com.ZxYz.utils.BeanCopyUtils;
+import com.ZxYz.utils.RedisCache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -28,6 +30,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    RedisCache redisCache;
 
     @Override
     public ResponseResult<?> hotArticleList() {
@@ -77,7 +81,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Page<Article> page = new Page<>(pageNum,pageSize);
         page(page,queryWrapper);
 
-        //查询categoryName
+
         List<Article> articles = page.getRecords();
 
         // for (Article article : articles) {
@@ -85,11 +89,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //     article.setCategoryName(category.getName());
         // }
 
+
+        //从redis获取viewCount
+        for (Article article : articles) {
+             Integer viewCount = redisCache.getCacheMapValue("article:viewCount", article.getId().toString());
+             article.setViewCount(viewCount.longValue());
+        }
+        //查询categoryName
         articles.stream()
                 .map(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName()))
                 .collect(Collectors.toList());
+
         //封装查询结果
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(page.getRecords(), ArticleListVo.class);
+
 
         PageVo pageVo = new PageVo(articleListVos, page.getTotal());
 
@@ -100,8 +113,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult<?> getArticleDetail(Long id) {
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+
         //根据 id 查询文章
         Article article = getById(id);
+
+        //从redis中获取ViewCount
+        Integer viewCount = redisCache.getCacheMapValue("article:viewCount", id.toString());
+        article.setViewCount(viewCount.longValue());
+
         //转换vo
         ArticleDetailVo articleDetailVo = BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
 
@@ -115,6 +134,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //封装返回
 
         return ResponseResult.okResult(articleDetailVo);
+    }
+
+    //将redis中的浏览量增加 1
+    @Override
+    public ResponseResult<?> updateViewCount(Long id) {
+
+        redisCache.incrementCacheMapValue("article:viewCount",id.toString(),1);
+        return ResponseResult.okResult();
     }
 
 
