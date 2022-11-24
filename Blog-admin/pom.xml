@@ -11,10 +11,6 @@
 
     <artifactId>Blog-admin</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
 
     <!--引入公共模块-->
     <dependencies>
@@ -23,6 +19,7 @@
             <artifactId>Blog-framework</artifactId>
             <version>1.0</version>
         </dependency>
+
     </dependencies>
 
 </project>

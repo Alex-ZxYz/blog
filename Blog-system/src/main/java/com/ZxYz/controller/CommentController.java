@@ -2,8 +2,10 @@ package com.ZxYz.controller;
 
 import com.ZxYz.constants.SystemConstants;
 import com.ZxYz.domain.ResponseResult;
+import com.ZxYz.domain.dto.AddCommentDto;
 import com.ZxYz.domain.entity.Comment;
 import com.ZxYz.service.CommentService;
+import com.ZxYz.utils.BeanCopyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,8 @@ public class CommentController {
 
     @PostMapping
     @ApiOperation(value = "添加评论",notes = "添加评论")
-    public ResponseResult<?> addComment(@RequestBody Comment comment){
+    public ResponseResult<?> addComment(@RequestBody AddCommentDto addCommentDto){
+        Comment comment  = BeanCopyUtils.copyBean(addCommentDto, Comment.class);
         return commentService.addComment(comment);
     }
 }

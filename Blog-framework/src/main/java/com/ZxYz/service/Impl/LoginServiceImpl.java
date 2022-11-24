@@ -43,7 +43,7 @@ public class LoginServiceImpl implements LoginService {
         Long userId = loginUser.getUser().getId();
         String jwt = JwtUtil.createJWT(String.valueOf(userId));
         //用户信息存入redis
-        redisCache.setCacheObject("login:"+userId,loginUser);
+        redisCache.setCacheObject("blogLogin:"+userId,loginUser);
         //封装 token和userinfo
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
         UserLoginVo userLoginVo = new UserLoginVo(jwt,userInfoVo);

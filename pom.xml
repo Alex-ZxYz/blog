@@ -18,8 +18,8 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <project.bulid.sourceEncoding>UTF-8</project.bulid.sourceEncoding>
-        <java-version>17</java-version>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>
@@ -32,6 +32,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
 
             <!--fastJson-->
             <dependency>
@@ -94,7 +95,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,8 +1,6 @@
 package com.ZxYz.config;
 
 import com.ZxYz.filter.JwtAuthenticationTokenFilter;
-import com.ZxYz.handler.security.AccessDeniedHandlerImpl;
-import com.ZxYz.handler.security.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,8 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 //需要登录授权
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/userInfo").authenticated()
-                .antMatchers("/upload").authenticated()
+                .antMatchers("/user/userInfo").authenticated()
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
 

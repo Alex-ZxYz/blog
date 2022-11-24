@@ -36,16 +36,15 @@ public class ResponseResult<T> implements Serializable {
         this.msg = msg;
     }
 
-    public static ResponseResult errorResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
+    public static ResponseResult<?> errorResult(int code, String msg) {
+        ResponseResult<?> result = new ResponseResult<>();
         return result.error(code, msg);
     }
-    public static ResponseResult okResult() {
-        ResponseResult result = new ResponseResult();
-        return result;
+    public static ResponseResult<?> okResult() {
+        return new ResponseResult<>();
     }
-    public static ResponseResult okResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
+    public static ResponseResult<?> okResult(int code, String msg) {
+        ResponseResult<?> result = new ResponseResult<>();
         return result.ok(code, null, msg);
     }
 
@@ -57,7 +56,7 @@ public class ResponseResult<T> implements Serializable {
         return result;
     }
 
-    public static ResponseResult errorResult(AppHttpCodeEnum enums){
+    public static ResponseResult<?> errorResult(AppHttpCodeEnum enums){
         return setAppHttpCodeEnum(enums,enums.getMsg());
     }
 
@@ -65,11 +64,11 @@ public class ResponseResult<T> implements Serializable {
         return setAppHttpCodeEnum(enums,msg);
     }
 
-    public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums){
+    public static ResponseResult<?> setAppHttpCodeEnum(AppHttpCodeEnum enums){
         return okResult(enums.getCode(),enums.getMsg());
     }
 
-    private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums, String msg){
+    private static ResponseResult<?> setAppHttpCodeEnum(AppHttpCodeEnum enums, String msg){
         return okResult(enums.getCode(),msg);
     }
 
@@ -117,7 +116,7 @@ public class ResponseResult<T> implements Serializable {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(T  data) {
         this.data = data;
     }
 
